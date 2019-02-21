@@ -1,0 +1,11 @@
+## This is a host entry configure file.
+## Each line contains a hostinfo including host/user/password,
+## which fields are splitted by '\t' or space.
+##
+## You can uncomment the example lines, or adding new line.
+
+## Commet
+##192.168.0.1  root    password1
+##192.168.0.2  root    password2          ## Commet
+##192.168.0.3[dev3]  root    password3    ## Commet
+##192.168.0.4[dev4]  root    password4

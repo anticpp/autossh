@@ -3,9 +3,11 @@ Toolkits for convenient SSH.
 
 ## Install
 
+Run `sh install`.The install will traverse available path in `/usr/local/bin`, `/usr/bin`, `/bin` in order.
+
 ## Tools
 
-Get help message by running with no arguments.
+Get help message by running with no argument.
 
 - assh
     Auto ssh.
@@ -13,7 +15,7 @@ Get help message by running with no arguments.
 - ascp
     Auto scp.
 
-## Configure
+## Configuration
 
 ### Host entry 
 The default host entry file path is `~/.autossh/hosts`. You can configure line of a hostinfo as format:
@@ -42,4 +44,4 @@ Here is an example.
 ## TODO
 
 - Fix escape character '\x1d' conflicted with `vim`.
-- Remove `pexpect.py`
+- Remove `pexpect.py`.
