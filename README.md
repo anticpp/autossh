@@ -10,10 +10,10 @@ Run `sh install`.The install will traverse available path in `/usr/local/bin`, `
 Get help message by running with no argument.
 
 - assh
-    Auto ssh.
+    + Auto ssh.
 
 - ascp
-    Auto scp.
+    + Auto scp.
 
 ## Configuration
 
