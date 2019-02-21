@@ -18,10 +18,12 @@ fi
 echo "Installing to ${INSTALL_PATH} ..."
 mkdir -pv ${INSTALL_PATH}/autossh
 
-cp -fv assh ascp *.py ${INSTALL_PATH}/autossh/
+cp -fv assh ascp apwd *.py ${INSTALL_PATH}/autossh/
 ln -sfv ${INSTALL_PATH}/autossh/assh ${INSTALL_PATH}/assh
 ln -sfv ${INSTALL_PATH}/autossh/ascp ${INSTALL_PATH}/ascp
+ln -sfv ${INSTALL_PATH}/autossh/apwd ${INSTALL_PATH}/apwd
 chmod +x ${INSTALL_PATH}/assh
 chmod +x ${INSTALL_PATH}/ascp
+chmod +x ${INSTALL_PATH}/apwd
 
 echo "DONE"

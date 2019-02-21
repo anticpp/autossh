@@ -17,6 +17,9 @@ Get help message by running with no argument.
 - ascp
     + Auto scp.
 
+- apwd
+    + Show password.
+
 ## Configuration
 
 ### Host entry 
