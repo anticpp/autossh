@@ -1,27 +1,11 @@
 #!/bin/bash
 
+INSTALL_PATH=~/bin/
+
 if ! test -e ~/.autossh
 then
     mkdir -pv ~/.autossh
     cp -v conf/hosts.demo ~/.autossh/hosts
-fi
-
-TRAVERSE_PATH="/usr/local/bin /usr/bin /bin"
-INSTALL_PATH=""
-for dir in ${TRAVERSE_PATH}
-do
-    if test -e ${dir}
-    then
-        INSTALL_PATH=${dir}
-        break
-    fi
-done
-
-if [ "${INSTALL_PATH}"X == X ] 
-then
-    echo "No available install path: ${TRAVERSE_PATH}"
-    echo "Install fail."
-    exit 1
 fi
 
 if test -e ${INSTALL_PATH}/autossh
@@ -32,11 +16,11 @@ then
 fi
 
 echo "Installing to ${INSTALL_PATH} ..."
-
 mkdir -pv ${INSTALL_PATH}/autossh
+
 cp -fv assh ascp *.py ${INSTALL_PATH}/autossh/
 ln -sfv ${INSTALL_PATH}/autossh/assh ${INSTALL_PATH}/assh
-ln -sfv ${INSTALL_PATH}autossh/ascp ${INSTALL_PATH}/ascp
+ln -sfv ${INSTALL_PATH}/autossh/ascp ${INSTALL_PATH}/ascp
 chmod +x ${INSTALL_PATH}/assh
 chmod +x ${INSTALL_PATH}/ascp
 

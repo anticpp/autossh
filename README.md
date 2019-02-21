@@ -3,7 +3,9 @@ Toolkits for convenient SSH.
 
 ## Install
 
-Run `sh install`.The install will traverse available path in `/usr/local/bin`, `/usr/bin`, `/bin` in order.
+Run `sh install`. 
+
+Tools will be installed at `~/bin/`, you should set this directory to your `$PATH` environment.
 
 ## Tools
 

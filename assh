@@ -17,7 +17,7 @@ hl = hostlookup.HostLookup()
 hl.loadFromFile(hostEntryFile)
 ok, info = hl.get(target)
 if not ok:
-    print "Host not found: '%s' "%(target) 
+    print "Target not found: '%s' "%(target) 
     sys.exit(1)
 
 s = autossh.AutoSSH()
