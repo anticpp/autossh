@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import hostlookup
+import autossh
+
+hostEntryFile = os.path.expanduser("~/.autossh/hosts")
+
+if len(sys.argv) < 4:
+    print "Usage: \n\t" + sys.argv[0] + " [target] [src] [dst]"
+    sys.exit(0)
+
+target = sys.argv[1]
+src = sys.argv[2]
+dst = sys.argv[3]
+
+hl = hostlookup.HostLookup()
+hl.loadFromFile(hostEntryFile)
+ok, info = hl.get(target)
+if not ok:
+    print "'%s' not found in '%s' "%(host) 
+    sys.exit(1)
+
+s = autossh.AutoSSH()
+ok, msg = s.scp(info, src, dst)
+if not ok:
+    print "Scp to", info, "fail. Error", msg
+    sys.exit(1)
+s.close()

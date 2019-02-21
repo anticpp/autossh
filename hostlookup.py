@@ -2,9 +2,23 @@ class HostLookup:
     def __init__(self):
         self.__m0 = {} ## host->tupple(host, user, password)
         self.__m1 = {} ## alias->tupple(host, user, password)
+    
+    ## Input
+    ##  - path: File path
+    ##
+    ## Return
+    ##  - n: Number of hosts loaded
+    def loadFromFile(self, path):
+        f = open(path)
+        n = self.load(f)
+        f.close()
+        return n
 
     ## Input
     ##  - r: File object
+    ##
+    ## Return
+    ##  - n: Number of hosts loaded
     def load(self, r):
         while True:
             line = r.readline()
@@ -55,10 +69,10 @@ class HostLookup:
     ##  - info tupple (host, user, password)
     def get(self, target):
         if self.__m0.has_key(target):
-            return self.__m0[target]
+            return True, self.__m0[target]
 
         if self.__m1.has_key(target):
-            return self.__m1[target]
+            return True, self.__m1[target]
 
         return False, None
 
