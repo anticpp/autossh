@@ -1,29 +1,29 @@
 #!/bin/bash
 
-INSTALL_PATH=~/bin/
+INSTALL_HOME=~/bin/
 
-if ! test -e ~/.autossh
+if test ! test -d ~/.autossh
 then
     mkdir -pv ~/.autossh
     cp -v conf/hosts.demo ~/.autossh/hosts
 fi
 
-if test -e ${INSTALL_PATH}/autossh
+if test -d ${INSTALL_HOME}/autossh
 then
-    echo "An existing install has been found at ${INSTALL_PATH}/autossh."
+    echo "An existing install has been found at ${INSTALL_HOME}/autossh."
     echo "Remove it and run install again."
     exit 1
 fi
 
-echo "Installing to ${INSTALL_PATH} ..."
-mkdir -pv ${INSTALL_PATH}/autossh
+echo "Installing to ${INSTALL_HOME} ..."
+mkdir -pv ${INSTALL_HOME}/autossh
 
-cp -fv assh ascp apwd *.py ${INSTALL_PATH}/autossh/
-ln -sfv ${INSTALL_PATH}/autossh/assh ${INSTALL_PATH}/assh
-ln -sfv ${INSTALL_PATH}/autossh/ascp ${INSTALL_PATH}/ascp
-ln -sfv ${INSTALL_PATH}/autossh/apwd ${INSTALL_PATH}/apwd
-chmod +x ${INSTALL_PATH}/assh
-chmod +x ${INSTALL_PATH}/ascp
-chmod +x ${INSTALL_PATH}/apwd
+cp -fv assh ascp apwd *.py ${INSTALL_HOME}/autossh/
+ln -sfv ${INSTALL_HOME}/autossh/assh ${INSTALL_HOME}/assh
+ln -sfv ${INSTALL_HOME}/autossh/ascp ${INSTALL_HOME}/ascp
+ln -sfv ${INSTALL_HOME}/autossh/apwd ${INSTALL_HOME}/apwd
+chmod +x ${INSTALL_HOME}/assh
+chmod +x ${INSTALL_HOME}/ascp
+chmod +x ${INSTALL_HOME}/apwd
 
 echo "DONE"
