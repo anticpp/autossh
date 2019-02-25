@@ -5,7 +5,7 @@ import sys
 import hostlookup
 import autossh
 
-hostEntryFile = os.path.expanduser("~/.autossh/hosts")
+host_entry_file = os.path.expanduser("~/.autossh/hosts")
 
 if len(sys.argv) < 4:
     print "Usage: \n\t" + sys.argv[0] + " [target] [src] [dst]"
@@ -16,7 +16,7 @@ src = sys.argv[2]
 dst = sys.argv[3]
 
 hl = hostlookup.HostLookup()
-hl.loadFromFile(hostEntryFile)
+hl.loadFromFile(host_entry_file)
 ok, info = hl.get(target)
 if not ok:
     print "Target '%s' not found"%(target) 

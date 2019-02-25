@@ -2,7 +2,7 @@
 
 INSTALL_HOME=~/bin/
 
-if test ! test -d ~/.autossh
+if ! test -d ~/.autossh
 then
     mkdir -pv ~/.autossh
     cp -v conf/hosts.demo ~/.autossh/hosts
