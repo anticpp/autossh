@@ -50,3 +50,4 @@ Here is an example.
 
 - Fix escape character '\x1d' conflicted with `vim`.
 - Remove `pexpect.py`.
+- Support pip install.
