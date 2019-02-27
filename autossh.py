@@ -58,7 +58,43 @@ class AutoSSH:
             else:      # user expects
                 self.__child.sendline(reacts[n-len(default_expects)])
         return ok, errmsg
+    
+    ## Input
+    ##  - info tupple("host", "user", "password"), jump target hostinfo
+    ## Return
+    ##  - result bool
+    ##  - errmsg string
+    def jump(self, info):
+        ok = True
+        errmsg = ""
+        host = info[0]
+        user = info[1]
+        password = info[2]
 
+        self.__child.sendline("ssh %s@%s"%(user, host))
+        while True:
+            n = self.__child.expect(["yes/no", "assword:", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
+            if n==0:   # yes/no
+                self.__child.sendline("yes")
+            elif n==1: # assword:
+                self.__child.sendline(password)
+            elif n==2: # [#\$]
+                break
+            elif n==3: # TIMEOUT
+                ok = False
+                errmsg = "TIMEOUT"
+                break;
+            elif n==4: # EOF
+                ok = False
+                errmsg = "EOF"
+                break;
+
+        return ok, errmsg
+
+    ## WHY:
+    ##  There are some situations which for secure reason, 
+    ##  you have to jump from a secure node to target machine.
+    ##
     ## Input
     ##  - info tupple("host", "user", "password"), hostinfo
     ##  - src string, source file
