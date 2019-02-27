@@ -14,25 +14,33 @@ class AutoSSH:
 	self.__child.close()
         self.__child = None
 
-    def settimeout(s):
+    def settimeout(self, s):
         self.__timeout = s
 
     ## Input
     ##  - info tupple("host", "user", "password"), hostinfo
+    ##  - expects array[string], user expects for extention
+    ##  - reacts array[string], reacts for user expects
     ## Return
     ##  - result bool
     ##  - errmsg string
-    def login(self, info):
+    def login(self, info, expects=None, reacts=None):
         ok = True
         errmsg = ""
         host = info[0]
         user = info[1]
         password = info[2]
+        
+        default_expects = ["yes/no", "assword:", "[#\$]", pexpect.TIMEOUT, pexpect.EOF]
+        if expects is None:
+            expects = default_expects
+        else:
+            expects = default_expects + expects
 
 	self.__child = pexpect.spawn("ssh", ["%s@%s"%(user, host)])
         self.__child.logfile_read = sys.stdout
         while True:
-            n = self.__child.expect(["yes/no", "assword:", "[#\$]", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
+            n = self.__child.expect(expects, timeout=self.__timeout)
             if n==0:   # yes/no
                 self.__child.sendline("yes")
             elif n==1: # assword:
@@ -47,9 +55,8 @@ class AutoSSH:
                 ok = False
                 errmsg = "EOF"
                 break;
-            else:
-                ok = False
-                errmsg = "unknown"
+            else:      # user expects
+                self.__child.sendline(reacts[n-len(default_expects)])
         return ok, errmsg
 
     ## Input
