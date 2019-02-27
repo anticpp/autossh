@@ -59,6 +59,10 @@ class AutoSSH:
                 self.__child.sendline(reacts[n-len(default_expects)])
         return ok, errmsg
     
+    ## WHY:
+    ##  There are some situations which for secure reason, 
+    ##  you have to jump from a secure node to target machine.
+    ##
     ## Input
     ##  - info tupple("host", "user", "password"), jump target hostinfo
     ## Return
@@ -91,10 +95,6 @@ class AutoSSH:
 
         return ok, errmsg
 
-    ## WHY:
-    ##  There are some situations which for secure reason, 
-    ##  you have to jump from a secure node to target machine.
-    ##
     ## Input
     ##  - info tupple("host", "user", "password"), hostinfo
     ##  - src string, source file
