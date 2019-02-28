@@ -77,7 +77,7 @@ class AutoSSH:
 
         self.__child.sendline("ssh %s@%s"%(user, host))
         while True:
-            n = self.__child.expect(["yes/no", "assword:", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
+            n = self.__child.expect(["yes/no", "assword:", "[#\$]", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
             if n==0:   # yes/no
                 self.__child.sendline("yes")
             elif n==1: # assword:
