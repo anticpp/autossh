@@ -2,24 +2,28 @@
 
 import os
 import sys
-import hostlookup
 import autossh
-import default
+import autossh.autossh
+import autossh.hostlookup
+import autossh.default
 
 if len(sys.argv) < 2:
-    print "Usage: \n\t" + sys.argv[0] + " [target]"
+    print ""
+    print "Usage:" 
+    print "  assh [target]"
+    print ""
     sys.exit(0)
 
 target = sys.argv[1]
 
-hl = hostlookup.HostLookup()
-hl.loadFromFile(default.host_entry_file)
+hl = autossh.hostlookup.HostLookup()
+hl.loadFromFile(autossh.default.host_entry_file)
 ok, info = hl.get(target)
 if not ok:
     print "Target not found: '%s' "%(target) 
     sys.exit(1)
 
-s = autossh.AutoSSH()
+s = autossh.autossh.AutoSSH()
 ok, msg = s.login(info)
 if not ok:
     print "Login to", target, "fail. Error:", msg

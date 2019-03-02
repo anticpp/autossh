@@ -3,9 +3,7 @@ Toolkits for convenient SSH.
 
 ## Install
 
-Run `sh install`. 
-
-Tools will be installed at `~/bin/`, you should set this directory to your `$PATH` environment.
+`pip install .`
 
 ## Tools
 
@@ -50,4 +48,5 @@ Here is an example.
 
 - Fix escape character '\x1d' conflicted with `vim`.
 - Remove `pexpect.py`.
-- Support pip install.
+- Publish to PyPI
+- Pip install, create default default `~/.autossh/hosts`

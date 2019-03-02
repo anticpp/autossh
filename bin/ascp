@@ -2,26 +2,30 @@
 
 import os
 import sys
-import hostlookup
 import autossh
-import default
+import autossh.autossh
+import autossh.hostlookup
+import autossh.default
 
 if len(sys.argv) < 4:
-    print "Usage: \n\t" + sys.argv[0] + " [target] [src] [dst]"
+    print ""
+    print "Usage:"
+    print "  ascp [target] [src] [dst]"
+    print ""
     sys.exit(0)
 
 target = sys.argv[1]
 src = sys.argv[2]
 dst = sys.argv[3]
 
-hl = hostlookup.HostLookup()
-hl.loadFromFile(default.host_entry_file)
+hl = autossh.hostlookup.HostLookup()
+hl.loadFromFile(autossh.default.host_entry_file)
 ok, info = hl.get(target)
 if not ok:
     print "Target '%s' not found"%(target) 
     sys.exit(1)
 
-s = autossh.AutoSSH()
+s = autossh.autossh.AutoSSH()
 ok, msg = s.scp(info, src, dst)
 if not ok:
     print "Scp to", info, "fail. Error", msg
