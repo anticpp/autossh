@@ -48,5 +48,8 @@ Here is an example.
 
 - Fix escape character '\x1d' conflicted with `vim`.
 - Remove `pexpect.py`.
-- Publish to PyPI
-- Pip install, create default default `~/.autossh/hosts`
+- Publish to PyPI.
+- Pip install
+    + Default configure files installed.
+- Command line arguments.
+    + -t timeout
