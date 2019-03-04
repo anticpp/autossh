@@ -7,12 +7,16 @@ class HostLookup:
     ##  - path: File path
     ##
     ## Return
-    ##  - n: Number of hosts loaded
+    ##  - ok bool: if success
+    ##  - n   int: Number of hosts loaded
     def loadFromFile(self, path):
-        f = open(path)
+        try:
+            f = open(path)
+        except IOError, e:
+            return False, 0
         n = self.load(f)
         f.close()
-        return n
+        return True, n
 
     ## Input
     ##  - r: File object

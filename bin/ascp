@@ -19,7 +19,10 @@ src = sys.argv[2]
 dst = sys.argv[3]
 
 hl = autossh.hostlookup.HostLookup()
-hl.loadFromFile(autossh.default.host_entry_file)
+ok, n = hl.loadFromFile(autossh.default.host_entry_file)
+if not ok:
+    print "[Warning] Load host entry file", autossh.default.host_entry_file, "fail. You can touch one."
+
 ok, info = hl.get(target)
 if not ok:
     print "Target '%s' not found"%(target) 
