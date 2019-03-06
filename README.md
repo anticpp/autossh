@@ -3,12 +3,12 @@ Toolkits for convenient SSH.
 
 ## Install
 
-`pip install`
+`pip install .`
 
 ## Configuration
 
 ### Host entry 
-Create host entry file at `~/.autossh/hosts`.
+Put your login host to host entry file, which default path is `~/.autossh/hosts`. You can get a copy at `conf/hosts.demo`.
 
 Formated as:
 
