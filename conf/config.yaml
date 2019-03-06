@@ -1,0 +1,2 @@
+hosts:
+    file: "~/.autossh/hosts"      ## Host entry file

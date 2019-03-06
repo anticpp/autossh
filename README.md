@@ -7,6 +7,10 @@ Toolkits for convenient SSH.
 
 ## Configuration
 
+### Config
+
+Default configure file is `~/.config/autossh/config.yaml`. You can get a copy at `conf/config.yaml`.
+
 ### Host entry 
 Put your login host to host entry file, which default path is `~/.autossh/hosts`. You can get a copy at `conf/hosts.demo`.
 
