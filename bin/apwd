@@ -3,8 +3,6 @@
 import os
 import sys
 import autossh
-import autossh.hostlookup
-import autossh.default
 
 if len(sys.argv) < 2:
     print ""
