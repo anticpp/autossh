@@ -7,6 +7,7 @@ setup(name="autossh",
         author="supergui",
         author_email="supergui@live.cn",
         license="None",
+        install_requires=['pexpect'],
         packages=["autossh"],
         scripts=["bin/assh", "bin/ascp", "bin/apwd"],
         zip_safe=False)
