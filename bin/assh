@@ -36,4 +36,5 @@ ok, msg = s.login(info)
 if not ok:
     print "Login to", target, "fail. Error:", msg
     sys.exit(1)
+s.autowinsize()
 s.interact()

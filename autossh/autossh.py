@@ -2,20 +2,32 @@
 
 import sys
 import pexpect
+import proc
 
 class AutoSSH:
     def __init__(self):
         self.__child = None
         self.__timeout = 3
+        self.__watch_ws = None
 
     def close(self):
         if self.__child is None:
             return 
+
+        if self.__watch_ws is not None:
+            self.__watch_ws.close()
+            self.__watch_ws = None
+
 	self.__child.close()
         self.__child = None
 
     def settimeout(self, s):
         self.__timeout = s
+
+    ## Set auto window size
+    def autowinsize(self):
+        if self.__watch_ws is None:
+            self.__watch_ws = proc.WatchWinsize(self.__child)
 
     ## Input
     ##  - info tupple("host", "user", "password"), hostinfo
