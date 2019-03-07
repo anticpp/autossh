@@ -1,6 +1,10 @@
 Toolkits for convenient SSH.
 =====================================
 
+## Requirements
+
+- pexpect 
+
 ## Install
 
 `pip install .`
@@ -42,7 +46,10 @@ Get help message by running with no argument.
 ## TODO
 
 - Fix escape character '\x1d' conflicted with `vim`.
+    + DONE
 - Remove `pexpect.py`.
+    + DONE
+- Incompatible with `vim`. 
 - Publish to PyPI.
 - Command line arguments.
     + -t timeout

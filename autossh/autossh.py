@@ -144,5 +144,11 @@ class AutoSSH:
 	self.__child.sendline("exit")
 
     def interact(self):
-        self.__child.interact()
+        ## Close logfile_read before interact.
+        self.__child.logfile_read = None
+
+        ## The default escape character is `\x1d`(Ctrl+]),
+        ## which conflicts with vim.
+        ## Set to None to disable escaping from child.
+        self.__child.interact(escape_character=None)
 
