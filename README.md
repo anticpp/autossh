@@ -1,10 +1,6 @@
 Toolkits for convenient SSH.
 =====================================
 
-## Requirements
-
-- pexpect 
-
 ## Install
 
 `pip install .`
