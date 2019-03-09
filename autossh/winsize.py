@@ -7,7 +7,7 @@ import signal
 import fcntl
 import termios
 
-## All process.
+## Process to be watched.
 __procs = {}
 
 def auto():
@@ -17,7 +17,13 @@ def auto():
 ## Input:
 ##   p pexpect.Spwan, a pexpect spwan process
 def add_proc(p):
+    ## Add to watch list
     __procs[p.pid] = p
+
+    ## Init winsize
+    s = struct.pack("HHHH", 0, 0, 0, 0)
+    a = struct.unpack('hhhh', fcntl.ioctl(sys.stdout.fileno(), termios.TIOCGWINSZ , s))
+    p.setwinsize(a[0], a[1])
 
 ## Remove process
 def remove_proc(p):

@@ -45,7 +45,8 @@ Get help message by running with no argument.
     + DONE
 - Remove `pexpect.py`.
     + DONE
-- Incompatible with `vim`. 
+- Messy window size with `vim` or `man page`.
+    + DONE
 - Publish to PyPI.
 - Command line arguments.
     + -t timeout
