@@ -9,5 +9,6 @@ setup(name="autossh",
         license="None",
         install_requires=['pexpect'],
         packages=["autossh"],
-        scripts=["bin/assh", "bin/ascp", "bin/apwd"],
+        scripts=["bin/assh", "bin/ascp", "bin/acat"],
+        include_package_data=True,
         zip_safe=False)

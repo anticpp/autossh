@@ -35,8 +35,8 @@ Get help message by running with no argument.
 - ascp
     + Auto scp.
 
-- apwd
-    + Show password.
+- acat
+    + Cat hosts.
 
 
 ## TODO
