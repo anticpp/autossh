@@ -1,6 +1,3 @@
 
-import hostlookup 
-import autossh 
+__all__ = ["ssh", "tools"]
 
-import winsize
-winsize.auto()

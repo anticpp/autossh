@@ -1,17 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 import os
 import sys
 import yaml
-import autossh
+import autossh.ssh
+import autossh.tools.lookup
 
 config_file = os.path.expanduser("~/.config/autossh/config.yaml")
 
 if len(sys.argv) < 4:
-    print ""
-    print "Usage:"
-    print "  ascp [target] [src] [dst]"
-    print ""
+    print("")
+    print("Usage:")
+    print("  ascp [target] [src] [dst]")
+    print("")
     sys.exit(0)
 
 target = sys.argv[1]
@@ -20,22 +21,22 @@ dst = sys.argv[3]
 
 ## Load configure file
 f = open(config_file)
-c = yaml.load(f)
+c = yaml.safe_load(f)
 f.close()
 
-hl = autossh.hostlookup.HostLookup()
-ok, n = hl.loadFromFile(os.path.expanduser(c["hosts"]["file"]))
+lu = autossh.tools.lookup.Lookup()
+ok, n = lu.loadFromFile(os.path.expanduser(c["hosts"]["file"]))
 if not ok:
-    print "[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one."
+    print("[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one.")
 
-ok, info = hl.get(target)
+ok, info = lu.get(target)
 if not ok:
-    print "Target '%s' not found"%(target) 
+    print("Target '%s' not found"%(target))
     sys.exit(1)
 
-s = autossh.autossh.AutoSSH()
+s = autossh.ssh.SSH()
 ok, msg = s.scp(info, src, dst)
 if not ok:
-    print "Scp to", info, "fail. Error", msg
+    print("Scp to", info, "fail. Error", msg)
     sys.exit(1)
 s.close()

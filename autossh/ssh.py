@@ -1,24 +1,22 @@
-#!/usr/bin/env python
-
 import sys
 import pexpect
-import proc
+import autossh.tools.winsize
 
-class AutoSSH:
+class SSH:
     def __init__(self):
         self.__child = None
         self.__timeout = 3
-        self.__watch_ws = None
+        self.__wd = None
 
     def close(self):
         if self.__child is None:
             return 
 
-        if self.__watch_ws is not None:
-            self.__watch_ws.close()
-            self.__watch_ws = None
+        if self.__wd is not None:
+            self.__wd.close()
+            self.__wd = None
 
-	self.__child.close()
+        self.__child.close()
         self.__child = None
 
     def settimeout(self, s):
@@ -26,8 +24,8 @@ class AutoSSH:
 
     ## Set auto window size
     def autowinsize(self):
-        if self.__watch_ws is None:
-            self.__watch_ws = proc.WatchWinsize(self.__child)
+        if self.__wd is None:
+            self.__wd = autossh.tools.winsize.WatchDog(self.__child)
 
     ## Input
     ##  - info tupple("host", "user", "password"), hostinfo
@@ -49,8 +47,8 @@ class AutoSSH:
         else:
             expects = default_expects + expects
 
-	self.__child = pexpect.spawn("ssh", ["%s@%s"%(user, host)])
-        self.__child.logfile_read = sys.stdout
+        self.__child = pexpect.spawn("ssh", ["%s@%s"%(user, host)])
+        self.__child.logfile_read = sys.stdout.buffer
         while True:
             n = self.__child.expect(expects, timeout=self.__timeout)
             if n==0:   # yes/no
@@ -122,7 +120,7 @@ class AutoSSH:
         password = info[2]
 
         self.__child = pexpect.spawn("scp", [src, "%s@%s:%s"%(user, host, dst)])
-        self.__child.logfile_read = sys.stdout
+        self.__child.logfile_read = sys.stdout.buffer
         while True:
             n = self.__child.expect(["yes/no", "assword:", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
             if n==0:   # yes/no
@@ -141,7 +139,7 @@ class AutoSSH:
         return ok, errmsg
 
     def exit(self):
-	self.__child.sendline("exit")
+        self.__child.sendline("exit")
 
     def interact(self):
         ## Close logfile_read before interact.
