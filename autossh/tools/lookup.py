@@ -1,4 +1,4 @@
-class HostLookup:
+class Lookup:
     def __init__(self):
         self.__m0 = {} ## host->tupple(host, user, password)
         self.__m1 = {} ## alias->tupple(host, user, password)
@@ -12,7 +12,7 @@ class HostLookup:
     def loadFromFile(self, path):
         try:
             f = open(path)
-        except IOError, e:
+        except IOError as e:
             return False, 0
         n = self.load(f)
         f.close()
@@ -72,10 +72,10 @@ class HostLookup:
     ##  - result bool
     ##  - info tupple (host, user, password)
     def get(self, target):
-        if self.__m0.has_key(target):
+        if target in self.__m0:
             return True, self.__m0[target]
 
-        if self.__m1.has_key(target):
+        if target in self.__m1:
             return True, self.__m1[target]
 
         return False, None
@@ -92,15 +92,15 @@ TESTSAMPLE = \
 
 if __name__=="__main__":
     import sys
-    import StringIO
+    from io import StringIO
 
-    hl = HostLookup()
-    n = hl.load(StringIO.StringIO(TESTSAMPLE))
-    print n, "hosts loaded success ..."
-    print "Get by host =>", hl.get("192.168.0.1")
-    print "Get by host =>", hl.get("192.168.0.2")
-    print "Get by host =>", hl.get("192.168.0.3")
-    print "Get by host =>", hl.get("192.168.0.4")
-    print "Get by alias =>", hl.get("dev3")
-    print "Get by alias =>", hl.get("dev4")
-    print "Get notfound =>", hl.get("notfound")
+    lu = Lookup()
+    n = lu.load(StringIO(TESTSAMPLE))
+    print(n, "hosts loaded success ...")
+    print("Get by host =>", lu.get("192.168.0.1"))
+    print("Get by host =>", lu.get("192.168.0.2"))
+    print("Get by host =>", lu.get("192.168.0.3"))
+    print("Get by host =>", lu.get("192.168.0.4"))
+    print("Get by alias =>", lu.get("dev3"))
+    print("Get by alias =>", lu.get("dev4"))
+    print("Get notfound =>", lu.get("notfound"))

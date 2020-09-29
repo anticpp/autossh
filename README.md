@@ -1,9 +1,13 @@
 Toolkits for convenient SSH.
 =====================================
 
+## Notice
+
+Python2 is not supported.
+
 ## Install
 
-`pip install .`
+`pip3 install .`
 
 ## Configuration
 
@@ -47,6 +51,9 @@ Get help message by running with no argument.
     + DONE
 - Messy window size with `vim` or `man page`.
     + DONE
+- Migrage to Py3
+    + Done
 - Publish to PyPI.
 - Command line arguments.
     + -t timeout
+- Add tool `apull`.

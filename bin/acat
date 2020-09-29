@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 '''
 Usage:
@@ -9,7 +9,7 @@ Usage:
 import os
 import sys
 import yaml
-import autossh
+import autossh.tools.lookup
 
 config_file = os.path.expanduser("~/.config/autossh/config.yaml")
 
@@ -19,27 +19,27 @@ if len(sys.argv)>=2:
 
 ## Load configure file
 f = open(config_file)
-c = yaml.load(f)
+c = yaml.safe_load(f)
 f.close()
 
 if len(target)>0:
-    hl = autossh.hostlookup.HostLookup()
-    ok, n = hl.loadFromFile(os.path.expanduser(c["hosts"]["file"]))
+    lu = autossh.tools.lookup.Lookup()
+    ok, n = lu.loadFromFile(os.path.expanduser(c["hosts"]["file"]))
     if not ok:
-        print "[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one."
-    ok, info = hl.get(target)
+        print("[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one.")
+    ok, info = lu.get(target)
     if not ok:
-        print "Target not found: '%s' "%(target) 
+        print("Target not found: '%s' "%(target) )
         sys.exit(1)
-    print info
+    print(info)
 else:
     content = ""
     try:
         f = open(os.path.expanduser(c["hosts"]["file"]))
         content = f.read()
         f.close()
-    except IOError, e:
-        print "[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one."
-    print content
+    except IOError as e:
+        print("[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one.")
+    print(content)
 
 

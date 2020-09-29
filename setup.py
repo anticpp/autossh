@@ -1,14 +1,14 @@
-from setuptools import setup
+import setuptools
 
-setup(name="autossh",
-        version="0.1",
+setuptools.setup(name="autossh",
+        version="1.3.0",
         description="Auto-SSH toolkits",
         url="https://www.github.com/anticpp/autossh",
         author="supergui",
         author_email="supergui@live.cn",
         license="None",
-        install_requires=['pexpect'],
-        packages=["autossh"],
+        install_requires=['pexpect', 'pyyaml'],
+        packages=setuptools.find_packages(),
         scripts=["bin/assh", "bin/ascp", "bin/acat"],
         include_package_data=True,
         zip_safe=False)
