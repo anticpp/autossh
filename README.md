@@ -57,3 +57,4 @@ Get help message by running with no argument.
 - Command line arguments.
     + -t timeout
 - Add tool `apull`.
+- Install exec to specified dir, etc `/usr/local/bin/`.
