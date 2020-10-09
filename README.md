@@ -7,7 +7,7 @@ Python2 is not supported.
 
 ## Install
 
-`pip3 install .`
+`pip3 install --root=/ .`
 
 ## Configuration
 
@@ -54,6 +54,7 @@ Get help message by running with no argument.
 - Migrage to Py3
     + Done
 - Publish to PyPI.
+- Default configuration.
 - Command line arguments.
     + -t timeout
 - Add tool `apull`.
