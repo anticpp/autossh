@@ -7,7 +7,8 @@ Python2 is not supported.
 
 ## Install
 
-`pip3 install --root=/ .`
+
+`sudo pip3 install --root=/ .`
 
 ## Configuration
 
