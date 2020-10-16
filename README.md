@@ -23,13 +23,14 @@ Create a host entry file at `~/.autossh/hosts`. Refer to \$repo/`conf/hosts.demo
 Formated as:
 
 ```
-host[alias]     user    password
+host<:port><[alias]>     user    password
 ```
 
-- host: Ip or hostname
-- alias: An alias name of host
-- user: Login user
-- password: Login password
+- host: Ip or hostname, required.
+- port: Port, optional.
+- alias: Alias name for host, optional.
+- user: Login user, required.
+- password: Login password, required.
 
 ## Toolkits
 
