@@ -14,10 +14,11 @@ Python2 is not supported.
 
 ### Config
 
-Default configure file is `~/.config/autossh/config.yaml`. You can get a copy at `conf/config.yaml`.
+All configurations have a default value, or you can configure with configure file `~/.autossh/config.yaml`. Refer to \$repo/`conf/config.yaml`.
+
 
 ### Host entry 
-Put your login host to host entry file, which default path is `~/.autossh/hosts`. You can get a copy at `conf/hosts.demo`.
+Create a host entry file at `~/.autossh/hosts`. Refer to \$repo/`conf/hosts.demo`.
 
 Formated as:
 
@@ -30,18 +31,12 @@ host[alias]     user    password
 - user: Login user
 - password: Login password
 
-## Tools
-
-Get help message by running with no argument.
+## Toolkits
 
 - assh
-    + Auto ssh.
-
-- ascp
-    + Auto scp.
-
+- apush
+- apull
 - acat
-    + Cat hosts.
 
 
 ## TODO
@@ -54,9 +49,12 @@ Get help message by running with no argument.
     + DONE
 - Migrage to Py3
     + Done
-- Publish to PyPI.
 - Default configuration.
+    + DONE
+- Publish to PyPI.
 - Command line arguments.
     + -t timeout
-- Add tool `apull`.
+- Add tool `apush` `apull`.
+    + DONE
 - Install exec to specified dir, etc `/usr/local/bin/`.
+    + DONE
