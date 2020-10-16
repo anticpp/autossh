@@ -18,7 +18,7 @@ class SSH:
     def __init__(self, target):
         self.__target = target
         self.__child = None
-        self.__timeout = 3
+        self.__timeout = 20
         self.__wd = None
         self.__c = config.load()
         self.__lu = lookup.load(os.path.expanduser(self.__c.host_file))
@@ -57,8 +57,9 @@ class SSH:
             return False, "Host not found '%s'."%(self.__target)
 
         host = info[0]
-        user = info[1]
-        password = info[2]
+        port = info[1]
+        user = info[2]
+        password = info[3]
         
         default_expects = ["yes/no", "assword:", "[#\$]", pexpect.TIMEOUT, pexpect.EOF]
         if expects is None:
@@ -66,7 +67,10 @@ class SSH:
         else:
             expects = default_expects + expects
 
-        self.__child = pexpect.spawn("ssh", ["%s@%s"%(user, host)])
+        if port==0:
+            self.__child = pexpect.spawn("ssh", ["%s@%s"%(user, host)])
+        else:
+            self.__child = pexpect.spawn("ssh", ["%s@%s"%(user, host), "-p", port])
         self.__child.logfile_read = sys.stdout.buffer
         while True:
             n = self.__child.expect(expects, timeout=self.__timeout)
@@ -101,10 +105,11 @@ class SSH:
         ok = True
         errmsg = ""
         host = info[0]
-        user = info[1]
-        password = info[2]
+        port = info[1]
+        user = info[2]
+        password = info[3]
 
-        self.__child.sendline("ssh %s@%s"%(user, host))
+        self.__child.sendline("ssh -p %s %s@%s -p %s"%(port, user, host))
         while True:
             n = self.__child.expect(["yes/no", "assword:", "[#\$]", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
             if n==0:   # yes/no
@@ -141,10 +146,15 @@ class SSH:
             return False, "Host not found '%s'."%(self.__target)
 
         host = info[0]
-        user = info[1]
-        password = info[2]
+        port = info[1]
+        user = info[2]
+        password = info[3]
 
-        self.__child = pexpect.spawn("scp", [src, "%s@%s:%s"%(user, host, dst)])
+        if port==0:
+            self.__child = pexpect.spawn("scp", [src, "%s@%s:%s"%(user, host, dst)])
+        else:
+            self.__child = pexpect.spawn("scp", [src, "-p", port, "%s@%s:%s"%(user, host, dst)])
+
         self.__child.logfile_read = sys.stdout.buffer
         while True:
             n = self.__child.expect(["yes/no", "assword:", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
@@ -180,10 +190,14 @@ class SSH:
             return False, "Host not found '%s'."%(self.__target)
 
         host = info[0]
-        user = info[1]
-        password = info[2]
-
-        self.__child = pexpect.spawn("scp", ["%s@%s:%s"%(user, host, src), dst])
+        port = info[1]
+        user = info[2]
+        password = info[3]
+    
+        if port==0:
+            self.__child = pexpect.spawn("scp", ["%s@%s:%s"%(user, host, src), dst])
+        else:
+            self.__child = pexpect.spawn("scp", ["-p", port, "%s@%s:%s"%(user, host, src), dst])
         self.__child.logfile_read = sys.stdout.buffer
         while True:
             n = self.__child.expect(["yes/no", "assword:", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
