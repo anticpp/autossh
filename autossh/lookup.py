@@ -8,8 +8,8 @@ def load(fpath):
 
 class Lookup:
     def __init__(self):
-        self.__m0 = {} ## host->tupple(host, user, password)
-        self.__m1 = {} ## alias->tupple(host, user, password)
+        self.__m0 = {} ## host->tupple(host, port, user, password)
+        self.__m1 = {} ## alias->tupple(host, port, user, password)
     
     ## Input
     ##  - path: File path
@@ -53,11 +53,12 @@ class Lookup:
             ## [1] user
             ## [2] password
             host = sp[0]
+            port = 0
             user = sp[1]
             password = sp[2]
             alias = None
 
-            ## Alias
+            ## Parse alias
             ##   Example: www.example.com[example]
             ##            `host` = www.example.com
             ##            `alias` = example
@@ -67,9 +68,18 @@ class Lookup:
                 alias = host[pos1+1:pos2]
                 host = host[0:pos1]
             
-            self.__m0[host] = (host, user, password)
+            ## Parse port
+            ##   Example: www.example.com:36000
+            ##            `host` = www.example.com
+            ##            `port` = 36000
+            pos = host.find(":")
+            if pos>0:
+                port = host[pos+1:]
+                host = host[0:pos]
+
+            self.__m0[host] = (host, port, user, password)
             if alias is not None:
-                self.__m1[alias] = (host, user, password)
+                self.__m1[alias] = (host, port, user, password)
 
         return len(self.__m0)
 
@@ -78,7 +88,7 @@ class Lookup:
     ##
     ## Return
     ##  - result bool
-    ##  - info tupple (host, user, password)
+    ##  - info tupple (host, port, user, password)
     def get(self, target):
         if target in self.__m0:
             return True, self.__m0[target]
@@ -96,6 +106,8 @@ TESTSAMPLE = \
 192.168.0.2  root    password2          ## Commet
 192.168.0.3[dev3]  root    password3    ## Commet
 192.168.0.4[dev4]  root    password4
+192.168.0.5:36000  root    password4
+192.168.0.6:9918[dev6]  root    password4
 '''
 
 if __name__=="__main__":
@@ -109,6 +121,9 @@ if __name__=="__main__":
     print("Get by host =>", lu.get("192.168.0.2"))
     print("Get by host =>", lu.get("192.168.0.3"))
     print("Get by host =>", lu.get("192.168.0.4"))
+    print("Get by host =>", lu.get("192.168.0.5"))
+    print("Get by host =>", lu.get("192.168.0.6"))
     print("Get by alias =>", lu.get("dev3"))
     print("Get by alias =>", lu.get("dev4"))
+    print("Get by alias =>", lu.get("dev6"))
     print("Get notfound =>", lu.get("notfound"))
