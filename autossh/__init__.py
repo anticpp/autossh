@@ -1,3 +1,3 @@
 
-__all__ = ["ssh", "tools"]
+__all__ = ["ssh", "config", "lookup"]
 

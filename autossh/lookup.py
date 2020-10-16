@@ -1,3 +1,11 @@
+
+def load(fpath):
+    lu = Lookup()
+    ok, _ = lu.loadFromFile(fpath)
+    if not ok:
+        print("WARNING: Lookup::load from \"%s\" fail.", fpath)
+    return lu
+
 class Lookup:
     def __init__(self):
         self.__m0 = {} ## host->tupple(host, user, password)

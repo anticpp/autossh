@@ -3,39 +3,19 @@
 import os
 import sys
 import yaml
-import autossh.tools.lookup
 import autossh.ssh
-
-config_file = os.path.expanduser("~/.config/autossh/config.yaml")
 
 if len(sys.argv) < 2:
     print("")
     print("Usage:")
     print("  assh [target]")
     print("")
-    sys.exit(0)
-
-target = sys.argv[1]
-
-## Load configure file
-f = open(config_file)
-c = yaml.safe_load(f)
-f.close()
-
-lu = autossh.tools.lookup.Lookup()
-ok, n = lu.loadFromFile(os.path.expanduser(c["hosts"]["file"]))
-if not ok:
-    print("[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one.")
-
-ok, info = lu.get(target)
-if not ok:
-    print("Target not found: '%s' "%(target))
     sys.exit(1)
 
-s = autossh.ssh.SSH()
-ok, msg = s.login(info)
+s = autossh.ssh.new(sys.argv[1])
+ok, err = s.login()
 if not ok:
-    print("Login to", target, "fail. Error:", msg)
+    print(err)
     sys.exit(1)
 s.autowinsize()
 s.interact()
