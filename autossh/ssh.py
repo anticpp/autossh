@@ -124,13 +124,15 @@ class SSH:
 
         return ok, errmsg
 
+    ## Function
+    ##    Send local file to remote.
     ## Input
     ##  - src string, Local source file
     ##  - dst string, Remote destination
     ## Return
     ##  - result bool
     ##  - errmsg string
-    def push(self, src, dst):
+    def send_file(self, src, dst):
         ok = True
         errmsg = ""
 
@@ -143,6 +145,45 @@ class SSH:
         password = info[2]
 
         self.__child = pexpect.spawn("scp", [src, "%s@%s:%s"%(user, host, dst)])
+        self.__child.logfile_read = sys.stdout.buffer
+        while True:
+            n = self.__child.expect(["yes/no", "assword:", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
+            if n==0:   # yes/no
+                self.__child.sendline("yes")
+            elif n==1: # assword:
+                self.__child.sendline(password)
+            elif n==2: # TIMEOUT
+                ok = False
+                errmsg = "TIMEOUT"
+            else:      # EOF
+                ## TODO:
+                ## Can not distinguish error or success with EOF
+                ## For example, if scp error causing by network or invalid password,
+                ## the child will print error message and EOF.
+                break
+        return ok, errmsg
+
+    ## Function
+    ##    Pull remote file to local.
+    ## Input
+    ##  - src string, Remote source file
+    ##  - dst string, Local destination
+    ## Return
+    ##  - result bool
+    ##  - errmsg string
+    def pull_file(self, src, dst):
+        ok = True
+        errmsg = ""
+
+        ok, info = self.__lu.get(self.__target)
+        if not ok:
+            return False, "Host not found '%s'."%(self.__target)
+
+        host = info[0]
+        user = info[1]
+        password = info[2]
+
+        self.__child = pexpect.spawn("scp", ["%s@%s:%s"%(user, host, src), dst])
         self.__child.logfile_read = sys.stdout.buffer
         while True:
             n = self.__child.expect(["yes/no", "assword:", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)

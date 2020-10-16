@@ -9,6 +9,6 @@ setuptools.setup(name="autossh",
         license="None",
         install_requires=['pexpect'],
         packages=setuptools.find_packages(),
-        scripts=["bin/assh", "bin/apush", "bin/acat"],
+        scripts=["bin/assh", "bin/apush", "bin/apull", "bin/acat"],
         include_package_data=True,
         zip_safe=False)
