@@ -1,12 +1,27 @@
+import os
 import sys
 import pexpect
-import autossh.tools.winsize
+import yaml
+from . import config
+from . import lookup
+from . import winsize
+
+# Set config file path, or using default.
+def set_config(path):
+    config.set_path(path)
+
+def new(target):
+    s = SSH(target)
+    return s
 
 class SSH:
-    def __init__(self):
+    def __init__(self, target):
+        self.__target = target
         self.__child = None
         self.__timeout = 3
         self.__wd = None
+        self.__c = config.load()
+        self.__lu = lookup.load(os.path.expanduser(self.__c.host_file))
 
     def close(self):
         if self.__child is None:
@@ -25,18 +40,22 @@ class SSH:
     ## Set auto window size
     def autowinsize(self):
         if self.__wd is None:
-            self.__wd = autossh.tools.winsize.WatchDog(self.__child)
+            self.__wd = winsize.WatchDog(self.__child)
 
     ## Input
-    ##  - info tupple("host", "user", "password"), hostinfo
     ##  - expects array[string], user expects for extention
     ##  - reacts array[string], reacts for user expects
     ## Return
     ##  - result bool
     ##  - errmsg string
-    def login(self, info, expects=None, reacts=None):
+    def login(self, expects=None, reacts=None):
         ok = True
         errmsg = ""
+
+        ok, info = self.__lu.get(self.__target)
+        if not ok:
+            return False, "Host not found '%s'."%(self.__target)
+
         host = info[0]
         user = info[1]
         password = info[2]

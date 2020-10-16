@@ -8,38 +8,29 @@ Usage:
 
 import os
 import sys
-import yaml
-import autossh.tools.lookup
-
-config_file = os.path.expanduser("~/.config/autossh/config.yaml")
+import autossh.config
+import autossh.lookup
 
 target = ""
-if len(sys.argv)>=2:
+if len(sys.argv) >=2:
     target = sys.argv[1]
 
-## Load configure file
-f = open(config_file)
-c = yaml.safe_load(f)
-f.close()
+c = autossh.config.load()
+lu = autossh.lookup.load(os.path.expanduser(c.host_file))
 
 if len(target)>0:
-    lu = autossh.tools.lookup.Lookup()
-    ok, n = lu.loadFromFile(os.path.expanduser(c["hosts"]["file"]))
-    if not ok:
-        print("[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one.")
     ok, info = lu.get(target)
     if not ok:
-        print("Target not found: '%s' "%(target) )
-        sys.exit(1)
-    print(info)
+        print("Host not found '%s'."%(target))
+    else:
+        print(info)
 else:
     content = ""
     try:
-        f = open(os.path.expanduser(c["hosts"]["file"]))
+        f = open(os.path.expanduser(c.host_file))
         content = f.read()
         f.close()
     except IOError as e:
-        print("[Warning] Load host entry file", c["hosts"]["file"], "fail. You can touch one.")
+        content = "None"
     print(content)
-
 
