@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(name="autossh",
-        version="1.3.0",
+        version="1.4.0",
         description="Auto-SSH toolkits",
         url="https://www.github.com/anticpp/autossh",
         author="supergui",
