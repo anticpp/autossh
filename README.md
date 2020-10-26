@@ -7,7 +7,6 @@ Python2 is not supported.
 
 ## Install
 
-
 `sudo pip3 install --root=/ .`
 
 ## Configuration
@@ -23,22 +22,24 @@ Create a host entry file at `~/.autossh/hosts`. Refer to \$repo/`conf/hosts.demo
 Formated as:
 
 ```
-host<:port><[alias]>     user    password
+host[:port][\[alias\]]     user    password
 ```
 
 - host: Ip or hostname, required.
 - port: Port, optional.
 - alias: Alias name for host, optional.
-- user: Login user, required.
-- password: Login password, required.
+- user: Login user, required. "None" for anonymous.
+- password: Login password, required. "None" for anonymous.
 
 ## Toolkits
+
+Run `-h` for help messages.
 
 - assh
 - apush
 - apull
 - acat
-
+- qssh
 
 ## TODO
 

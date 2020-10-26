@@ -84,17 +84,17 @@ class Lookup:
         return len(self.__m0)
 
     ## Input
-    ##  - target: Host name or alias name
+    ##  - destination: Host name or alias name
     ##
     ## Return
     ##  - result bool
     ##  - info tupple (host, port, user, password)
-    def get(self, target):
-        if target in self.__m0:
-            return True, self.__m0[target]
+    def get(self, destination):
+        if destination in self.__m0:
+            return True, self.__m0[destination]
 
-        if target in self.__m1:
-            return True, self.__m1[target]
+        if destination in self.__m1:
+            return True, self.__m1[destination]
 
         return False, None
 

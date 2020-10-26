@@ -5,8 +5,18 @@
 ## You can uncomment the example lines, or adding new line.
 
 ## Commet
+# Common use
 ##192.168.0.1  root    password1
+#
+# Add 'commet' with '#`
 ##192.168.0.2  root    password2          ## Commet
-##192.168.0.3[dev3]  root    password3    ## Commet
+#
+# Alias
+##192.168.0.3[dev3]  root    password3
 ##192.168.0.4[dev4]  root    password4
+#
+# Specify ssh port
 ##192.168.0.4:36000[dev5]  root    password4
+#
+# Anonymous
+##192.168.0.5  None    None

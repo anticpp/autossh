@@ -10,13 +10,13 @@ from . import winsize
 def set_config(path):
     config.set_path(path)
 
-def new(target):
-    s = SSH(target)
+def new(destination):
+    s = SSH(destination)
     return s
 
 class SSH:
-    def __init__(self, target):
-        self.__target = target
+    def __init__(self, destination):
+        self.__destination = destination
         self.__child = None
         self.__timeout = 20
         self.__wd = None
@@ -52,25 +52,30 @@ class SSH:
         ok = True
         errmsg = ""
 
-        ok, info = self.__lu.get(self.__target)
+        ok, info = self.__lu.get(self.__destination)
         if not ok:
-            return False, "Host not found '%s'."%(self.__target)
-
+            return False, "Host not found '%s'."%(self.__destination)
         host = info[0]
         port = info[1]
         user = info[2]
         password = info[3]
-        
+     
+        # args
+        args = []
+        if user=="None":
+            args = ["%s"%(host)]
+        else:
+            args = ["%s@%s"%(user, host)]
+        if port!=0:
+            args += ["-p", port]
+
         default_expects = ["yes/no", "assword:", "[#\$]", pexpect.TIMEOUT, pexpect.EOF]
         if expects is None:
             expects = default_expects
         else:
             expects = default_expects + expects
 
-        if port==0:
-            self.__child = pexpect.spawn("ssh", ["%s@%s"%(user, host)])
-        else:
-            self.__child = pexpect.spawn("ssh", ["%s@%s"%(user, host), "-p", port])
+        self.__child = pexpect.spawn("ssh", args)
         self.__child.logfile_read = sys.stdout.buffer
         while True:
             n = self.__child.expect(expects, timeout=self.__timeout)
@@ -88,30 +93,47 @@ class SSH:
                 ok = False
                 errmsg = "EOF"
                 break;
-            else:      # user expects
-                self.__child.sendline(reacts[n-len(default_expects)])
+            else:      # user-defined expects
+                re = reacts[n-len(default_expects)]
+                val = re 
+                if callable(re):
+                    val = re()
+                self.__child.sendline(val)
         return ok, errmsg
     
-    ## WHY:
-    ##  There are some situations, etc. for secure reason, 
-    ##  you have to jump from a secure node to target machine.
-    ##
-    ## Input
-    ##  - info tupple("host", "user", "password"), jump target hostinfo
     ## Return
     ##  - result bool
     ##  - errmsg string
-    def jump(self, info):
+    def jump(self, destination, expects=None, reacts=None):
         ok = True
         errmsg = ""
+
+        ok, info = self.__lu.get(destination)
+        if not ok:
+            return False, "Host not found '%s'."%(destination)
         host = info[0]
         port = info[1]
         user = info[2]
         password = info[3]
 
-        self.__child.sendline("ssh -p %s %s@%s -p %s"%(port, user, host))
+        # cmdline
+        cmdline = ""
+        if user=="None":
+            cmdline = "ssh %s"%(host)
+        else:
+            cmdline = "ssh %s@%s"%(user, host)
+        if port!=0:
+            cmdline += " -p %s"%(port)
+
+        default_expects = ["yes/no", "assword:", "[#\$]", pexpect.TIMEOUT, pexpect.EOF]
+        if expects is None:
+            expects = default_expects
+        else:
+            expects = default_expects + expects
+
+        self.__child.sendline(cmdline)
         while True:
-            n = self.__child.expect(["yes/no", "assword:", "[#\$]", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
+            n = self.__child.expect(expects, timeout=self.__timeout)
             if n==0:   # yes/no
                 self.__child.sendline("yes")
             elif n==1: # assword:
@@ -126,6 +148,12 @@ class SSH:
                 ok = False
                 errmsg = "EOF"
                 break;
+            else:      # user-defined expects
+                re = reacts[n-len(default_expects)]
+                val = re 
+                if callable(re):
+                    val = re()
+                self.__child.sendline(val)
 
         return ok, errmsg
 
@@ -141,9 +169,9 @@ class SSH:
         ok = True
         errmsg = ""
 
-        ok, info = self.__lu.get(self.__target)
+        ok, info = self.__lu.get(self.__destination)
         if not ok:
-            return False, "Host not found '%s'."%(self.__target)
+            return False, "Host not found '%s'."%(self.__destination)
 
         host = info[0]
         port = info[1]
@@ -185,9 +213,9 @@ class SSH:
         ok = True
         errmsg = ""
 
-        ok, info = self.__lu.get(self.__target)
+        ok, info = self.__lu.get(self.__destination)
         if not ok:
-            return False, "Host not found '%s'."%(self.__target)
+            return False, "Host not found '%s'."%(self.__destination)
 
         host = info[0]
         port = info[1]
