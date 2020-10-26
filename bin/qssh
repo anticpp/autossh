@@ -1,0 +1,36 @@
+#!/usr/bin/python3
+# Jump to target from 'mnet'.
+import os
+import sys
+import yaml
+import autossh.ssh
+
+## Get token from stdin.
+class Token:
+    def __call__(self):
+        import getpass
+        token = getpass.getpass("")
+        return token.strip()
+
+if len(sys.argv)>1 and sys.argv[1]=="-h":
+    print("")
+    print("Usage:")
+    print("  qssh [-h] [destination]")
+    print("")
+    print("qssh             #ssh to 'mnet'")
+    print("qssh destination #ssh to 'destination' from 'mnet'")
+    print("")
+    sys.exit(1)
+
+s = autossh.ssh.new("mnet")
+ok, err = s.login(["Token: "], [Token()])
+if not ok:
+    print(err)
+    sys.exit(1)
+if len(sys.argv)>1:
+    ok, err = s.jump(sys.argv[1])
+    if not ok:
+        print(err)
+        sys.exit(1)
+s.autowinsize()
+s.interact()
