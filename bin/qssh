@@ -27,6 +27,10 @@ def load_config():
      
     try:
         c.cache_file = os.path.expanduser(o["cache"]["file"])
+    except Exception as e:
+        None
+
+    try:
         c.cache_ttl = int(o["cache"]["ttl"])
     except Exception as e:
         None

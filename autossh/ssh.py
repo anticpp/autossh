@@ -6,10 +6,6 @@ from . import config
 from . import lookup
 from . import winsize
 
-# Set config file path, or using default.
-def set_config(path):
-    config.set_path(path)
-
 def new(destination):
     s = SSH(destination)
     return s
@@ -18,9 +14,9 @@ class SSH:
     def __init__(self, destination):
         self.__destination = destination
         self.__child = None
-        self.__timeout = 20
         self.__wd = None
         self.__c = config.load()
+        self.__timeout = self.__c.timeout
         self.__lu = lookup.load(os.path.expanduser(self.__c.host_file))
 
     def close(self):

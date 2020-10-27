@@ -5,9 +5,7 @@ config_file = os.path.expanduser("~/.config/autossh/config.yaml")
 class config:
     def __init__(self):
         self.host_file = os.path.expanduser("~/.config/autossh/hosts") # Default
-
-def set_path(fpath):
-    config_file = fpath
+        self.timeout = 20
 
 def load():
     c = config()
@@ -20,9 +18,7 @@ def load():
         return c
      
     try:
-        # Do nothing
-        # Future use
-        None
+        c.timeout = int(o["timeout"])
     except Exception as e:
         None
 
