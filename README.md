@@ -16,9 +16,9 @@ Python2 is not supported.
 All configurations have default values, you don't have to create config file. Or you can create one at `~/.config/<module>/config.yaml`. Refer to \$repo`/config/<module>/config.yaml` for configuration detail.
 
 ### Host file
-Add host file at `~/.config/autossh/hosts`. Refer to \$repo`/config/autossh/hosts`.
+Use `aedit` to add host. Or host file path is at `~/.config/autossh/hosts`, you can create by your own. Refer to \$repo`/config/autossh/hosts`.
 
-Formate:
+Format:
 
 ```
 host[:port][\[alias\]]     user    password
@@ -34,11 +34,12 @@ host[:port][\[alias\]]     user    password
 
 Run `-h` for help messages.
 
-- assh
-- apush
-- apull
-- acat
-- qssh
+- assh : Auto-ssh.
+- apush: Push local file to remote.
+- apull: Pull file from remote to local.
+- acat : Cat host file.
+- aedit: Edit host file.
+- qssh : Jump destination with mnet.
 
 ## TODO
 
