@@ -1,10 +1,10 @@
 import os
 
-config_file = os.path.expanduser("~/.autossh/config.yaml")
+config_file = os.path.expanduser("~/.config/autossh/config.yaml")
 
 class config:
     def __init__(self):
-        self.host_file = os.path.expanduser("~/.autossh/hosts") # Default
+        self.host_file = os.path.expanduser("~/.config/autossh/hosts") # Default
 
 def set_path(fpath):
     config_file = fpath
@@ -20,7 +20,9 @@ def load():
         return c
      
     try:
-        c.host_file = os.path.expanduser(o["hosts"]["file"])
+        # Do nothing
+        # Future use
+        None
     except Exception as e:
         None
 

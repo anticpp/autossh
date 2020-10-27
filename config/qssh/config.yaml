@@ -1,0 +1,3 @@
+cache:
+    file: "~/.qssh.token"
+    ttl: 60

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Jump to target from 'mnet'.
+# Jump to target from 'mnet'. 'mnet' host is required in host file.
 import os
 import sys
 import time
@@ -7,11 +7,37 @@ import yaml
 import getpass
 import autossh.ssh
 
+config_file = os.path.expanduser("~/.config/qssh/config.yaml")
+
+## Config
+class Config:
+    def __init__(self):
+        self.cache_file = os.path.expanduser("~/.qssh.token") # Default cache file
+        self.cache_ttl = 60                                   # Default cache ttl 60 seconds
+
+def load_config():
+    c = Config()
+    try:
+        f = open(config_file)
+        o = yaml.safe_load(f)
+        f.close()
+    except Exception as e:
+        # Load from config file error, return default config().
+        return c
+     
+    try:
+        c.cache_file = os.path.expanduser(o["cache"]["file"])
+        c.cache_ttl = int(o["cache"]["ttl"])
+    except Exception as e:
+        None
+
+    return c
+
 ## Get token from stdin.
 class Token:
-    def __init__(self):
-        self.__cache_ttl = 60
-        self.__cache_file = os.path.expanduser("~/.qssh.token")
+    def __init__(self, config):
+        self.__cache_file = config.cache_file
+        self.__cache_ttl = config.cache_ttl
     def __call__(self):
         ok, token = self.__try_cache()
         if ok is False:
@@ -46,8 +72,10 @@ if len(sys.argv)>1 and sys.argv[1]=="-h":
     print("")
     sys.exit(1)
 
+c = load_config()
+tk = Token(c)
 s = autossh.ssh.new("mnet")
-ok, err = s.login(["Token: "], [Token()])
+ok, err = s.login(["Token: "], [tk])
 if not ok:
     print(err)
     sys.exit(1)

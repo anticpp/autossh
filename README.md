@@ -13,13 +13,12 @@ Python2 is not supported.
 
 ### Config
 
-All configurations have a default value, or you can configure with configure file `~/.autossh/config.yaml`. Refer to \$repo/`conf/config.yaml`.
+All configurations have default values, you don't have to create config file. Or you can create one at `~/.config/<module>/config.yaml`. Refer to \$repo`/config/<module>/config.yaml` for configuration detail.
 
+### Host file
+Add host file at `~/.config/autossh/hosts`. Refer to \$repo`/config/autossh/hosts`.
 
-### Host entry 
-Create a host entry file at `~/.autossh/hosts`. Refer to \$repo/`conf/hosts.demo`.
-
-Formated as:
+Formate:
 
 ```
 host[:port][\[alias\]]     user    password
