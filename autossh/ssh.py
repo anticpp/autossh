@@ -177,7 +177,7 @@ class SSH:
         if port==0:
             self.__child = pexpect.spawn("scp", [src, "%s@%s:%s"%(user, host, dst)])
         else:
-            self.__child = pexpect.spawn("scp", [src, "-p", port, "%s@%s:%s"%(user, host, dst)])
+            self.__child = pexpect.spawn("scp", ["-P", port, src, "%s@%s:%s"%(user, host, dst)])
 
         self.__child.logfile_read = sys.stdout.buffer
         while True:
@@ -221,7 +221,7 @@ class SSH:
         if port==0:
             self.__child = pexpect.spawn("scp", ["%s@%s:%s"%(user, host, src), dst])
         else:
-            self.__child = pexpect.spawn("scp", ["-p", port, "%s@%s:%s"%(user, host, src), dst])
+            self.__child = pexpect.spawn("scp", ["-P", port, "%s@%s:%s"%(user, host, src), dst])
         self.__child.logfile_read = sys.stdout.buffer
         while True:
             n = self.__child.expect(["yes/no", "assword:", pexpect.TIMEOUT, pexpect.EOF], timeout=self.__timeout)
