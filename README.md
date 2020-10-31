@@ -5,9 +5,12 @@ Toolkits for convenient SSH.
 
 Python2 is not supported.
 
-## Install
+## Install & Uninstall
 
-`sudo pip3 install --root=/ .`
+```
+sudo sh install
+sudo sh uninstall
+```
 
 ## Configuration
 
